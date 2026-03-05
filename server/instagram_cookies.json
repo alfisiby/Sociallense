@@ -1,7 +1,7 @@
 [
   {
     "name": "sessionid",
-    "value": "73805044738%3ATLG5VmWy05OE2Y%3A24%3AAYi62PPAOeHgJKuF_xld_voAaa7dSJYEjqf-JN_Jrw",
+    "value": "YOUR_SESSION_ID_HERE",
     "domain": ".instagram.com",
     "path": "/",
     "expires": 1900000000,
@@ -11,7 +11,7 @@
   },
   {
     "name": "csrftoken",
-    "value": "Eu2h1lYjSMB2GVUtggI9b8",
+    "value": "YOUR_CSRF_TOKEN_HERE",
     "domain": ".instagram.com",
     "path": "/",
     "expires": 1806415590.431802,
@@ -21,7 +21,7 @@
   },
   {
     "name": "datr",
-    "value": "PV2cabeNF1Hj8rn0RWnsj831",
+    "value": "YOUR_DATR_VALUE_HERE",
     "domain": ".instagram.com",
     "path": "/",
     "expires": 1806415164.521236,
@@ -31,7 +31,7 @@
   },
   {
     "name": "ig_did",
-    "value": "FE58EE9D-334C-4C73-9D47-27523FDD5B56",
+    "value": "YOUR_IG_DID_HERE",
     "domain": ".instagram.com",
     "path": "/",
     "expires": 1803391164.521261,
@@ -61,7 +61,7 @@
   },
   {
     "name": "mid",
-    "value": "aZxdWAALAAEwgcyQ63M8PtMOblFB",
+    "value": "YOUR_MID_VALUE_HERE",
     "domain": ".instagram.com",
     "path": "/",
     "expires": 1806415202,
