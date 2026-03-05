@@ -1,0 +1,702 @@
+📊
+
+SocialLens
+
+Instagram & TikTok Content Intelligence Tool
+
+Product Requirements Document (PRD)
+
+Version 1.0 | Local Web Application | No Login Required
+
+1. Product Overview
+
+  --------------- -------------------------------------------------------
+  Product Name    SocialLens — Instagram & TikTok Content Intelligence
+                  Tool
+
+  --------------- -------------------------------------------------------
+
+  --------------- -------------------------------------------------------
+  Product Type    Local Web Application (runs on localhost, no
+                  server/backend needed)
+
+  --------------- -------------------------------------------------------
+
+  --------------- -------------------------------------------------------
+  Target User     Marketers, brand managers, content strategists,
+                  founders tracking competitors
+
+  --------------- -------------------------------------------------------
+
+  --------------- -------------------------------------------------------
+  Inspired By     Apify (apify.com) — refer to Apify's Instagram Scraper
+                  actor for data extraction patterns and content
+                  structuring approaches
+
+  --------------- -------------------------------------------------------
+
+  --------------- -------------------------------------------------------
+  Tech Stack      Frontend: React + Tailwind CSS | Scraper: Playwright /
+                  Puppeteer (headless browser) | Storage: localStorage
+                  (browser)
+
+  --------------- -------------------------------------------------------
+
+  --------------- -------------------------------------------------------
+  Auth / Login    None — zero friction, open tool. Paste link → get data.
+                  That's it.
+
+  --------------- -------------------------------------------------------
+
+  --------------- -------------------------------------------------------
+  Deployment      Run locally via npm / yarn. Can be published to GitHub
+                  for easy clone-and-run.
+
+  --------------- -------------------------------------------------------
+
+1.1 Problem Statement
+
+Marketers and content teams spend hours manually scrolling through
+competitor Instagram and TikTok profiles trying to understand what
+content is working and what isn't. There is no simple, free, local tool
+that lets you paste a public social media profile link and instantly see
+a sorted, data-driven breakdown of that account's content performance.
+
+1.2 Product Vision
+
+SocialLens is a zero-login, locally-run web app that lets anyone paste a
+public Instagram or TikTok profile URL and instantly get a clean
+dashboard showing all their posts sorted by performance — views, likes,
+engagement — so you can learn from what's working in seconds, not hours.
+
+1.3 Reference Tool: Apify
+
+Apify (apify.com) is a cloud-based web scraping and automation platform.
+Their Instagram Profile Scraper actor scrapes public Instagram profiles
+without using the official Instagram API — instead, it uses a headless
+browser to load Instagram pages exactly as a real user would, then
+extracts post data from the page's JavaScript state. SocialLens follows
+the same philosophy: no API keys, no OAuth, no third-party accounts
+needed. Just a headless browser doing what any user's browser does.
+Developers building this tool should study Apify's Instagram and TikTok
+scrapers as a reference implementation for data extraction logic and
+edge-case handling.
+
+2. User Journey & Core Flow
+
+2.1 Primary User Flow
+
+The entire user experience is designed around a single, frictionless
+flow:
+
+  ------------------------------------------------------------------------
+  Step   Action           What Happens
+  ------ ---------------- ------------------------------------------------
+  1      Open the app     User navigates to localhost:3000 in their
+                          browser. App loads instantly — no login, no
+                          signup, no setup.
+
+  2      Paste profile    User pastes an Instagram or TikTok public
+         link             profile URL into the search bar (e.g.
+                          https://www.instagram.com/nike/)
+
+  3      Hit Analyze      App launches a headless browser in the
+                          background, visits the profile, and begins
+                          scraping public post data.
+
+  4      Loading state    A clean loading screen shows progress: 'Fetching
+                          posts... Extracting data... Building
+                          dashboard...'
+
+  5      Dashboard loads  A full content dashboard appears showing profile
+                          summary, all posts sorted by views (highest
+                          first), and key stats.
+
+  6      Explore & sort   User can re-sort by likes, comments, date
+                          posted, or engagement rate. Filter by post type
+                          (Reel, Photo, Carousel).
+
+  7      Profile saved    The profile link is automatically saved to the
+                          sidebar as a shortcut for one-click re-analysis
+                          later.
+  ------------------------------------------------------------------------
+
+2.2 Saved Profiles (Sidebar)
+
+Every profile the user analyzes is automatically saved in the browser's
+localStorage. The sidebar shows each saved profile with their avatar
+thumbnail, username, and platform icon. Clicking a saved profile re-runs
+the analysis instantly — no need to re-paste the URL.
+
+3. Feature Specifications
+
+3.1 Core Features (Phase 1 — Must Have)
+
+These are the non-negotiable features that must work perfectly before
+anything else is added. Build and stabilize these first.
+
+3.1.1 Profile Input & Scraping
+
+-   Large, centered URL input field at the top of the app — supports
+    Instagram and TikTok public profile URLs
+
+-   Auto-detect platform from URL (Instagram vs TikTok) and apply the
+    correct scraping logic
+
+-   Headless browser (Playwright recommended, Puppeteer as fallback)
+    launches silently in the background
+
+-   Scraper loads the profile page as a real browser would — no API
+    keys, no authentication required
+
+-   Extracts all visible public posts up to a configurable limit
+    (default: 50 most recent posts)
+
+-   Uses the same data extraction approach as Apify's Instagram Scraper
+    — refer to apify.com for implementation reference
+
+3.1.2 Profile Summary Card
+
+At the top of every dashboard, display a clean profile card showing:
+
+-   Profile picture (avatar)
+
+-   Username and display name
+
+-   Follower count
+
+-   Following count
+
+-   Total posts count
+
+-   Account bio / description
+
+-   Account category (if available — e.g. 'Brand', 'Creator',
+    'Business')
+
+-   Platform badge (Instagram or TikTok icon)
+
+3.1.3 Content Dashboard & Post Grid
+
+The main content area shows all scraped posts in a responsive grid
+layout. Each post card displays:
+
+-   Post thumbnail / video cover image
+
+-   View count (large, prominently displayed)
+
+-   Like count
+
+-   Comment count
+
+-   Post type badge — Reel, Photo, Carousel, or Video
+
+-   Date posted (e.g. '3 days ago' or exact date on hover)
+
+-   Engagement rate (calculated: (likes + comments) / followers × 100)
+
+-   Clicking a post card opens the actual post URL in a new browser tab
+
+3.1.4 Sorting & Filtering
+
+Users must be able to sort and filter their content analysis quickly:
+
+-   Sort by: Highest Views, Lowest Views, Most Likes, Most Comments,
+    Highest Engagement Rate, Newest First, Oldest First
+
+-   Filter by post type: All, Reels Only, Photos Only, Carousels Only
+
+-   Default sort is always Highest Views first
+
+3.1.5 Top 7 Best Performing Content
+
+A dedicated section at the top of the dashboard (above the full grid)
+highlights the Top 7 best performing posts. This section should be
+visually distinct — e.g. a highlighted row or card strip — and is always
+sorted by highest views. This is one of the primary outputs the user
+cares most about.
+
+3.2 Secondary Features (Phase 2 — Should Have)
+
+3.2.1 Saved Profiles Sidebar
+
+-   Every analyzed profile is saved automatically to localStorage with
+    no backend required
+
+-   Sidebar shows profile avatar, username, platform icon, and last
+    analyzed timestamp
+
+-   One-click to re-analyze a saved profile
+
+-   Option to remove/delete a saved profile from the sidebar
+
+-   Sidebar is collapsible to maximize dashboard space
+
+3.2.2 Account Statistics Overview
+
+Below the profile card, show a statistics bar with key metrics at a
+glance:
+
+-   Average views per post
+
+-   Average likes per post
+
+-   Average comments per post
+
+-   Average engagement rate
+
+-   Best performing post type (e.g. 'Reels outperform Photos by 3x')
+
+-   Total content count scraped
+
+-   Posting frequency (estimated posts per week/month based on date
+    range)
+
+3.2.3 Performance Chart
+
+-   A simple bar or line chart showing view counts across the last N
+    posts in chronological order
+
+-   Helps users visually spot trends — is the account growing,
+    declining, or consistent?
+
+-   Use a lightweight charting library (Recharts or Chart.js — free, no
+    API key needed)
+
+3.2.4 Export
+
+-   Export the full post data as a CSV file — one row per post with all
+    metrics
+
+-   No backend needed — use browser-native file download (Blob API)
+
+3.3 Nice-to-Have Features (Phase 3 — Future)
+
+-   Side-by-side comparison of two profiles
+
+-   Hashtag analysis — which hashtags appear most in top-performing
+    posts
+
+-   Caption length vs. performance correlation
+
+-   Dark mode toggle
+
+-   Multiple language support
+
+4. Data Model
+
+4.1 Scraped Post Object
+
+Each scraped post should be stored and displayed as a structured object
+containing the following fields:
+
+  ------------------------------------------------------------------------------
+  Field            Type       Description                       Source
+  ---------------- ---------- --------------------------------- ----------------
+  postId           string     Unique identifier for the post    Scraped from
+                                                                page
+
+  postUrl          string     Direct URL to the post            Scraped from
+                                                                page
+
+  thumbnailUrl     string     URL of the post thumbnail or      Scraped from
+                              cover image                       page
+
+  postType         enum       REEL | PHOTO | CAROUSEL | VIDEO   Detected from
+                                                                page structure
+
+  viewCount        number     Total views (Reels/Videos) —      Scraped from
+                              primary sort metric               page
+
+  likeCount        number     Total likes on the post           Scraped from
+                                                                page
+
+  commentCount     number     Total comments on the post        Scraped from
+                                                                page
+
+  caption          string     Post caption text (truncated to   Scraped from
+                              200 chars in UI)                  page
+
+  postedAt         datetime   Date and time the post was        Scraped from
+                              published                         page
+
+  engagementRate   float      Calculated: (likes + comments) /  Calculated
+                              followers × 100                   client-side
+  ------------------------------------------------------------------------------
+
+4.2 Saved Profile Object (localStorage)
+
+Each saved profile stored in localStorage follows this structure:
+
+  -------------------------------------------------------------------------
+  Field           Type       Description
+  --------------- ---------- ----------------------------------------------
+  profileUrl      string     The original URL the user pasted
+
+  username        string     The account's username/handle
+
+  platform        enum       INSTAGRAM | TIKTOK
+
+  avatarUrl       string     Profile picture URL
+
+  followerCount   number     Follower count at time of last analysis
+
+  lastAnalyzed    datetime   Timestamp of when the profile was last
+                             analyzed
+
+  cachedData      object     Optional: cached post data from last run to
+                             speed up re-loads
+  -------------------------------------------------------------------------
+
+5. UI/UX Design Guidelines
+
+5.1 Design Philosophy
+
+The UI should feel like a modern SaaS analytics tool — clean,
+data-forward, fast. Think Apify's dashboard meets a social media
+analytics product. Not corporate, not boring. Dark accents, clear
+hierarchy, and data that is immediately readable without needing any
+explanation.
+
+5.2 Layout Structure
+
+  -----------------------------------------------------------------------
+  Zone               Description
+  ------------------ ----------------------------------------------------
+  Top Navigation Bar App name 'SocialLens', platform toggle (Instagram /
+                     TikTok), and a subtle 'About' link. Clean and
+                     minimal.
+
+  URL Input Bar      Full-width, centered, large input with a prominent
+                     'Analyze' button. This is the hero element of the
+                     home state.
+
+  Left Sidebar       Collapsible saved profiles list. Shows avatar +
+                     username + platform icon per saved profile.
+
+  Main Content Area  Profile card → Stats bar → Top 7 strip → Full post
+                     grid → Chart (Phase 2)
+
+  Post Cards Grid    Responsive 3-4 column grid. Each card is clean with
+                     thumbnail, view count prominent, and subtle metadata
+                     below.
+  -----------------------------------------------------------------------
+
+5.3 Visual Design Tokens
+
+  -----------------------------------------------------------------------
+  Token            Value              Usage
+  ---------------- ------------------ -----------------------------------
+  Primary Color    #5B4CF5 (Purple)   Buttons, active states, headings,
+                                      highlights
+
+  Accent Color     #E1396C (Pink)     Instagram badge, top performer
+                                      highlights
+
+  TikTok Color     #000000 + #69C9D0  TikTok badge, TikTok-specific
+                                      elements
+
+  Background       #F8F9FA            App background
+                   (Off-white)        
+
+  Card Background  #FFFFFF (White)    Post cards, profile card
+
+  Text Primary     #1A1A2E (Near      All primary text
+                   black)             
+
+  Text Secondary   #6B7280 (Gray)     Metadata, secondary labels
+
+  Font             Inter (Google      All UI text — clean and modern
+                   Fonts, free)       
+
+  Border Radius    12px for cards,    Rounded, modern feel
+                   8px for inputs     
+
+  Shadow           0 2px 8px          Subtle card elevation
+                   rgba(0,0,0,0.08)   
+  -----------------------------------------------------------------------
+
+5.4 Empty & Loading States
+
+-   Home (empty) state: Large centered logo + tagline + URL input. No
+    clutter. Inspired by how Apify's actor input screens feel — simple
+    and purposeful.
+
+-   Loading state: Show a skeleton UI (greyed-out card placeholders)
+    with a progress indicator and friendly messages like 'Visiting
+    profile...', 'Reading posts...', 'Crunching numbers...'
+
+-   Error state: If scraping fails (e.g. private account, bot
+    detection), show a clear, friendly error message explaining what
+    happened and what the user can do (e.g. 'This account appears to be
+    private or Instagram blocked the request. Try again in a few
+    minutes.')
+
+-   No posts state: 'This account has no public posts yet.'
+
+6. Technical Architecture
+
+6.1 System Architecture Overview
+
+SocialLens is a fully local application. There is no cloud, no backend
+server, no database, and no third-party service subscriptions needed.
+The entire app runs on the user's machine.
+
+  ------------------------------------------------------------------------
+  Layer              Technology            Purpose
+  ------------------ --------------------- -------------------------------
+  Frontend UI        React + Tailwind      User interface, dashboard
+                     CSS + Recharts        rendering, data display
+
+  Local API /        Node.js + Express     Receives scrape requests from
+  Scraper Server     (lightweight local    the UI, runs headless browser
+                     server)               
+
+  Headless Browser   Playwright            Opens Instagram/TikTok pages,
+                     (preferred) or        extracts post data without API
+                     Puppeteer             
+
+  Data Storage       Browser localStorage  Saves profile shortcuts with no
+                                           backend database
+
+  Data Export        Browser Blob API      Exports data as CSV — no server
+                                           needed
+
+  Package Manager    npm or yarn           Dependency management
+  ------------------------------------------------------------------------
+
+6.2 Why Playwright Over Puppeteer
+
+Both Playwright and Puppeteer are valid choices. Playwright is
+recommended because it supports multiple browsers (Chromium, Firefox,
+WebKit), has better stealth capabilities against bot detection, and has
+more active maintenance. For Instagram specifically, using Playwright
+with a real browser context (not headless mode) can bypass basic bot
+detection. Reference Apify's open-source Instagram scraper on GitHub to
+see how they handle browser fingerprinting and detection evasion.
+
+6.3 Instagram Scraping Strategy
+
+Instagram does not expose a public API for this use case. The scraping
+approach follows the same method Apify uses in their Instagram Profile
+Scraper:
+
+-   Launch a Chromium browser in a non-headless (or stealth headless)
+    mode
+
+-   Navigate to the target Instagram profile URL
+
+-   Wait for the page's JavaScript to fully render the post grid
+
+-   Extract post data from the page's __additionalDataLoaded or
+    window.__initialData JavaScript objects, or by parsing the rendered
+    DOM
+
+-   Scroll down to load more posts (Instagram uses infinite scroll —
+    simulate scroll events to load additional posts)
+
+-   Extract: post URL, thumbnail, like count, comment count, view count
+    (for Reels), date, and post type
+
+-   Handle rate limiting gracefully — add random delays between actions
+    to mimic human behavior
+
+6.4 TikTok Scraping Strategy
+
+TikTok public profiles are generally more scraper-friendly than
+Instagram. The approach:
+
+-   Navigate to the TikTok profile URL
+
+-   TikTok embeds post data in JSON-LD or script tags on the page —
+    parse these directly
+
+-   For view counts and like counts, extract from the rendered post
+    cards
+
+-   TikTok's public data is more accessible — this should be the 'easier
+    win' platform to implement first
+
+6.5 localStorage Data Schema
+
+All saved profiles are stored in the browser's localStorage under the
+key 'sociallens_profiles'. The value is a JSON array of saved profile
+objects (see Section 4.2). There is no size limit concern given the data
+volume — localStorage supports up to 5–10MB which is more than
+sufficient for dozens of saved profiles.
+
+6.6 Project File Structure
+
+  -------------------------------------------------------------------------
+  Path                     Description
+  ------------------------ ------------------------------------------------
+  /                        Project root — package.json, README.md,
+                           .gitignore
+
+  /client                  React frontend application (Create React App or
+                           Vite)
+
+  /client/src/components   UI components: ProfileCard, PostGrid, PostCard,
+                           Sidebar, StatsBar, Chart
+
+  /client/src/pages        Home page, Dashboard page
+
+  /client/src/hooks        Custom hooks: useProfiles, useScraper,
+                           useLocalStorage
+
+  /client/src/utils        Helpers: formatNumber, calculateEngagement,
+                           detectPlatform
+
+  /server                  Node.js + Express local API server
+
+  /server/scrapers         Platform-specific scraper modules: instagram.js,
+                           tiktok.js
+
+  /server/index.js         Express server entry point — single endpoint:
+                           POST /api/scrape
+
+  /README.md               Setup instructions: npm install → npm run dev →
+                           open localhost:3000
+  -------------------------------------------------------------------------
+
+7. Non-Functional Requirements
+
+  ------------------------------------------------------------------------
+  Category        Requirement                    Target
+  --------------- ------------------------------ -------------------------
+  Performance     Time to first post visible on  Under 15 seconds for a
+                  dashboard after clicking       12-post profile
+                  Analyze                        
+
+  Performance     Full scrape of 50 posts        Under 60 seconds
+
+  Reliability     Graceful error handling for    User always sees a clear
+                  private accounts, rate limits, error message — never a
+                  and network failures           blank screen or crash
+
+  Usability       Zero setup friction — user     Under 3 minutes from
+                  should be able to clone repo,  clone to working app
+                  run npm install + npm run dev, 
+                  and have the app working       
+
+  Compatibility   Supported on macOS, Windows,   All three OS platforms
+                  and Linux                      
+
+  Storage         Saved profiles persist between localStorage, no backend
+                  browser sessions               needed
+
+  Portability     App should be shareable via    Public GitHub repository
+                  GitHub — anyone should be able with clear README
+                  to clone and run it            
+
+  UI Quality      Clean, modern, professional    No placeholder styles, no
+                  dashboard UI — comparable to   raw HTML, no unstyled
+                  Apify's actor UI               components
+  ------------------------------------------------------------------------
+
+8. Development Phases & Milestones
+
+  ------------------------------------------------------------------------
+  Phase   Milestone        Features Included         Goal
+  ------- ---------------- ------------------------- ---------------------
+  Phase 1 Core Scraper +   URL input, headless       Get data showing on
+          Basic Dashboard  scraper, post grid sorted screen — prove the
+                           by views, Top 7 strip,    scraper works
+                           profile card              
+
+  Phase 2 Full Dashboard   Stats bar, sorting        Make the dashboard
+                           controls, filtering, post genuinely useful for
+                           type badges, engagement   analysis
+                           rate                      
+
+  Phase 3 Saved Profiles   localStorage sidebar,     Add persistence and
+                           saved profile shortcuts,  convenience
+                           re-analyze on click       
+
+  Phase 4 Performance      Bar chart of views over   Add depth for power
+          Chart + Export   time, CSV export via Blob users
+                           API                       
+
+  Phase 5 Polish + GitHub  Responsive design,        Ship-ready, publicly
+          Release          loading skeletons, error  shareable product
+                           states, README,           
+                           .gitignore, clean code    
+  ------------------------------------------------------------------------
+
+Important: Do not add Phase 3 features until Phase 1 and 2 are fully
+working and stable. The scraper is the hardest and most important part —
+get that right first.
+
+9. Known Risks & Constraints
+
+  ------------------------------------------------------------------------------
+  Risk             Likelihood   Impact   Mitigation
+  ---------------- ------------ -------- ---------------------------------------
+  Instagram        High         High     Use Playwright with stealth plugins
+  detects the                            (playwright-extra +
+  headless browser                       puppeteer-extra-plugin-stealth). Add
+  and blocks the                         random delays. Optionally allow users
+  request                                to provide their own browser session
+                                         cookies for authenticated scraping.
+
+  Instagram        Medium       High     Follow Apify's open-source scraper on
+  changes their                          GitHub — they maintain it and update it
+  page structure,                        when Instagram changes. Use their
+  breaking the                           selectors as a reference.
+  scraper                                
+
+  TikTok           Medium       Medium   Add exponential backoff and a minimum
+  rate-limits                            delay between scrapes. Show a friendly
+  repeated                               'slow down' message to the user.
+  requests                               
+
+  Private accounts Certain      Low      Handle gracefully — detect the private
+  return no data                         account wall and show a clear error
+                                         message.
+
+  localStorage has Low          Low      Each profile only stores metadata +
+  limited size                           URLs. Actual post thumbnails are never
+  (~5–10MB)                              stored locally. Well within limits.
+  ------------------------------------------------------------------------------
+
+10. Glossary
+
+  -----------------------------------------------------------------------
+  Term             Definition
+  ---------------- ------------------------------------------------------
+  Headless Browser A web browser that runs without a visible UI window.
+                   Used by the scraper to load Instagram/TikTok pages
+                   programmatically, just like a real user would.
+
+  Playwright       An open-source browser automation library by
+                   Microsoft. Used to control a headless Chromium browser
+                   for scraping. Free, no API key needed.
+
+  Puppeteer        Google's open-source headless Chrome automation
+                   library. An alternative to Playwright. Also free, no
+                   API key needed.
+
+  Apify            A cloud web scraping platform (apify.com). Their
+                   Instagram and TikTok scrapers are a direct reference
+                   inspiration for SocialLens's scraping approach.
+
+  Engagement Rate  A metric calculated as: (likes + comments) / follower
+                   count × 100. Expressed as a percentage. A measure of
+                   how much an audience interacts with content.
+
+  localStorage     A browser-native key-value storage system. Persists
+                   data between browser sessions on the same device. No
+                   server or database needed.
+
+  Reel             Instagram's short-form video format. Typically the
+                   highest-performing content type in terms of views on
+                   Instagram.
+
+  Carousel         An Instagram post containing multiple images or videos
+                   that users can swipe through.
+
+  Bot Detection    Anti-scraping systems used by Instagram and TikTok
+                   that try to identify and block automated browser
+                   traffic. Playwright stealth plugins help bypass basic
+                   detection.
+  -----------------------------------------------------------------------
